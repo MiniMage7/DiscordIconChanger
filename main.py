@@ -36,22 +36,27 @@ if __name__ == '__main__':
         quit()
 
     # Find the Discord directory (currently default)
-    foundAppFolder = False
     user = os.environ.get('USERNAME')
     discordDirectory = 'C:\\Users\\' + user + '\\AppData\\Local\\Discord'
 
-    filenames = os.listdir(discordDirectory)
-    for filename in filenames:
-        if filename.find('app-') >= 0:
-            discordDirectory = discordDirectory + '\\' + filename + '\\Discord.exe'
-            foundAppFolder = True
-            break
+    if os.path.exists(discordDirectory):
+        filenames = os.listdir(discordDirectory)
+        for filename in filenames:
+            if filename.find('app-') >= 0:
+                discordDirectory += '\\' + filename + '\\Discord.exe'
+                break
 
-    # If discord wasn't found
-    if not (foundAppFolder and os.path.exists(discordDirectory)):
-        # TODO: Ask user
-        print('Discord not at default location')
-        quit()
+    # If discord wasn't found, ask user for discord.exe location
+    while not (os.path.exists(discordDirectory) and discordDirectory.endswith('\\Discord.exe')):
+        print('\nDiscord was not at the default location.')
+        discordDirectory = input('Please paste the filepath to Discord.exe\n>')
+
+        # In case the user just pasted the path to the folder that Discord is in
+        # Check if the pasted path is a folder with Discord.exe in it
+        if os.path.exists(discordDirectory) and os.path.isdir(discordDirectory):
+            for filename in os.listdir(discordDirectory):
+                if filename == 'Discord.exe':
+                    discordDirectory += '\\Discord.exe'
 
     # Get the image to make into the icon
     img = None
