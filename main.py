@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, UnidentifiedImageError
 
 
 # Takes an image file and makes it circular
@@ -40,8 +40,16 @@ if __name__ == '__main__':
     discordDirectory = 'C:\\Users\\' + user + '\\AppData\\Local\\Discord'
 
     # Get the image to make into the icon
-    pathToNewIcon = input('What is the image name?\n>')
-    img = Image.open(pathToNewIcon)
+    img = None
+    pathToNewIcon = ''
+    while img is None:
+        try:
+            pathToNewIcon = input('\nWhat is the image name?\n>')
+            img = Image.open(pathToNewIcon)
+        except FileNotFoundError as e:
+            print('The image doesn\'t exist. Is it in the same directory as this program?')
+        except UnidentifiedImageError as e:
+            print('This file type is not supported')
 
     # If it's not an icon already, round it
     # TODO: Make this optional
