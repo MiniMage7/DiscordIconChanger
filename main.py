@@ -8,15 +8,22 @@ def roundImage(image):
     # Function inspired from:
     # stackoverflow.com/questions/51486297/cropping-an-image-in-a-circular-way-using-python
     image = image.convert("RGB")
-    npImage = np.array(image)
-    h, w = image.size
+    w, h = image.size
 
-    # TODO: Square/Center image
+    # If the image isn't a square
+    if h > w:
+        image = image.crop((0, (h - w) / 2, w, h - (h - w) / 2))
+        w, h = image.size
+    elif w > h:
+        image = image.crop(((w - h) / 2, 0, w - (w - h) / 2, h))
+        w, h = image.size
+
+    npImage = np.array(image)
 
     # Create same size alpha layer with circle
     alpha = Image.new('L', image.size, 0)
     draw = ImageDraw.Draw(alpha)
-    draw.pieslice(((0, 0), (h, w)), 0, 360, fill=255)
+    draw.pieslice(((0, 0), (w, h)), 0, 360, fill=255)
 
     # Convert alpha Image to numpy array
     npAlpha = np.array(alpha)
