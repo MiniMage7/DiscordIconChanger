@@ -31,7 +31,7 @@ def roundImage(image):
 if __name__ == '__main__':
     # Check for OS
     if os.name != 'nt':
-        print("This currently only works for windows.")
+        print('This currently only works for windows.')
         quit()
 
     # Find the Discord directory (currently default)
@@ -51,9 +51,8 @@ if __name__ == '__main__':
         except UnidentifiedImageError as e:
             print('This file type is not supported')
 
-    # If it's not an icon already, round it
-    # TODO: Make this optional
-    if not pathToNewIcon.endswith('.ico'):
+    # Handle rounding the image
+    if input('\nWould you like to round the image? [Y/n]\n>').lower() != 'n':
         img = roundImage(img)
 
     # Save image in the 2 ico spots
