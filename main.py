@@ -10,7 +10,7 @@ def roundImage(image):
     image = image.convert("RGB")
     w, h = image.size
 
-    # If the image isn't a square
+    # If the image isn't a square, crop it into one
     if h > w:
         image = image.crop((0, (h - w) / 2, w, h - (h - w) / 2))
         w, h = image.size
@@ -42,7 +42,7 @@ if __name__ == '__main__':
         print('This currently only works for windows.')
         quit()
 
-    # Find the Discord directory (currently default)
+    # Look for the default Discord directory
     user = os.environ.get('USERNAME')
     discordDirectory = 'C:\\Users\\' + user + '\\AppData\\Local\\Discord'
 
@@ -53,7 +53,7 @@ if __name__ == '__main__':
                 discordDirectory += '\\' + filename + '\\Discord.exe'
                 break
 
-    # If discord wasn't found, ask user for discord.exe location
+    # If discord wasn't found, ask user for Discord.exe location
     while not (os.path.exists(discordDirectory) and discordDirectory.endswith('\\Discord.exe')):
         print('\nDiscord was not at the default location.')
         discordDirectory = input('Please paste the filepath to Discord.exe\n>')
@@ -72,9 +72,9 @@ if __name__ == '__main__':
         try:
             pathToNewIcon = input('\nWhat is the image name?\n>')
             img = Image.open(pathToNewIcon)
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             print('The image doesn\'t exist. Is it in the same directory as this program?')
-        except UnidentifiedImageError as e:
+        except UnidentifiedImageError:
             print('This file type is not supported')
 
     # Handle rounding the image
