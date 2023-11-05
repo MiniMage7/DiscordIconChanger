@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw, UnidentifiedImageError
 def roundImage(image):
     # Function inspired from:
     # stackoverflow.com/questions/51486297/cropping-an-image-in-a-circular-way-using-python
+    image = image.convert("RGB")
     npImage = np.array(image)
     h, w = image.size
 
@@ -35,9 +36,22 @@ if __name__ == '__main__':
         quit()
 
     # Find the Discord directory (currently default)
-    # TODO: Make this point at Discord.exe for smarter future dev
+    foundAppFolder = False
     user = os.environ.get('USERNAME')
     discordDirectory = 'C:\\Users\\' + user + '\\AppData\\Local\\Discord'
+
+    filenames = os.listdir(discordDirectory)
+    for filename in filenames:
+        if filename.find('app-') >= 0:
+            discordDirectory = discordDirectory + '\\' + filename + '\\Discord.exe'
+            foundAppFolder = True
+            break
+
+    # If discord wasn't found
+    if not (foundAppFolder and os.path.exists(discordDirectory)):
+        # TODO: Ask user
+        print('Discord not at default location')
+        quit()
 
     # Get the image to make into the icon
     img = None
@@ -56,11 +70,6 @@ if __name__ == '__main__':
         img = roundImage(img)
 
     # Save image in the 2 ico spots
-    filenames = os.listdir(discordDirectory)
-    for filename in filenames:
-        if filename.find('app-') >= 0:
-            img.save(discordDirectory + '\\' + filename + '\\app.ico')
-            break
-
-    img.save(discordDirectory + '\\app.ico')
-
+    pathSplit = discordDirectory.split('\\')
+    img.save('\\'.join(pathSplit[0:-1]) + '\\app.ico')
+    img.save('\\'.join(pathSplit[0:-2]) + '\\app.ico')
