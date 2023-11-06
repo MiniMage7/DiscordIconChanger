@@ -1,11 +1,14 @@
 from tkinter import *
 from tkinter import ttk, filedialog
 from PIL import Image
+import os
 
 
 # Ask user for the path to Discord.exe
 def getDiscordPath():
-    discordDirectory.set(filedialog.askopenfilename(filetypes=[('Discord', 'Discord.exe')]))
+    newDiscordDirectory = filedialog.askopenfilename(filetypes=[('Discord', 'Discord.exe')])
+    if os.path.exists(newDiscordDirectory) and newDiscordDirectory.endswith('Discord.exe'):
+        discordDirectory.set(newDiscordDirectory)
 
 
 # Ask user for the path to the image
