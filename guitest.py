@@ -1,0 +1,52 @@
+from tkinter import *
+from tkinter import ttk, filedialog
+from PIL import Image
+
+
+# Ask user for the path to Discord.exe
+def getDiscordPath():
+    discordDirectory.set(filedialog.askopenfilename(filetypes=[('Discord', 'Discord.exe')]))
+
+
+# Ask user for the path to the image
+def getImagePath():
+    exts = Image.registered_extensions()
+    supported_extensions = []
+    for ex in exts:
+        if exts[ex] in Image.OPEN:
+            supported_extensions.append(('Image', ex))
+    imageDirectory.set(filedialog.askopenfilename(filetypes=supported_extensions))
+
+
+if __name__ == '__main__':
+    # Make Window Structure
+    root = Tk()
+    root.title("Discord Icon Changer")
+
+    mainframe = ttk.Frame(root, padding="3 3 12 12")
+    mainframe.grid(column=0, row=0, sticky='NESW')
+    root.columnconfigure(0, weight=1)
+    root.rowconfigure(0, weight=1)
+
+    # Discord Directory Box
+    discordDirectory = StringVar()
+    discordEntry = ttk.Entry(mainframe, width=70, textvariable=discordDirectory)
+    discordEntry.grid(column=1, row=1, sticky='WE')
+    discordDirectory.set('C:/Users/77jam/AppData/Local/Discord/app-1.0.9021/Discord.exe')
+
+    # Discord Directory Browse Button
+    ttk.Button(mainframe, text='Browse', command=getDiscordPath).grid(column=2, row=1, sticky='WE')
+
+    # Image Directory Box
+    imageDirectory = StringVar()
+    imageEntry = ttk.Entry(mainframe, width=70, textvariable=imageDirectory)
+    imageEntry.grid(column=1, row=2, sticky='WE')
+
+    # Image Directory Browse Button
+    ttk.Button(mainframe, text='Browse', command=getImagePath).grid(column=2, row=2, sticky='WE')
+
+    # Add some padding
+    for child in mainframe.winfo_children():
+        child.grid_configure(padx=5, pady=5)
+
+    root.mainloop()
