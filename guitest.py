@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk, filedialog
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import os
 
 
@@ -24,7 +24,11 @@ def getImagePath():
     # Open file explorer for user input
     newImageDirectory = filedialog.askopenfilename(filetypes=supported_extensions)
     if os.path.exists(newImageDirectory) and newImageDirectory != '':
-        imageDirectory.set(newImageDirectory)
+        try:
+            Image.open(newImageDirectory)
+            imageDirectory.set(newImageDirectory)
+        except UnidentifiedImageError:
+            imageDirectory.set('Invalid image file')
 
 
 if __name__ == '__main__':
