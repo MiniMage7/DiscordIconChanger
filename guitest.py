@@ -6,6 +6,7 @@ import os
 
 # Ask user for the path to Discord.exe
 def getDiscordPath():
+    # Open file explorer for user input
     newDiscordDirectory = filedialog.askopenfilename(filetypes=[('Discord', 'Discord.exe')])
     if os.path.exists(newDiscordDirectory) and newDiscordDirectory.endswith('Discord.exe'):
         discordDirectory.set(newDiscordDirectory)
@@ -13,12 +14,17 @@ def getDiscordPath():
 
 # Ask user for the path to the image
 def getImagePath():
+    # Get possible file extensions
     exts = Image.registered_extensions()
     supported_extensions = []
     for ex in exts:
         if exts[ex] in Image.OPEN:
             supported_extensions.append(('Image', ex))
-    imageDirectory.set(filedialog.askopenfilename(filetypes=supported_extensions))
+
+    # Open file explorer for user input
+    newImageDirectory = filedialog.askopenfilename(filetypes=supported_extensions)
+    if os.path.exists(newImageDirectory) and newImageDirectory != '':
+        imageDirectory.set(newImageDirectory)
 
 
 if __name__ == '__main__':
