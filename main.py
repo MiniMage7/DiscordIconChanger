@@ -44,17 +44,17 @@ if __name__ == '__main__':
 
     # Look for the default Discord directory
     user = os.environ.get('USERNAME')
-    discordDirectory = 'C:\\Users\\' + user + '\\AppData\\Local\\Discord'
+    discordDirectory = 'C:/Users/' + user + '/AppData/Local/Discord'
 
     if os.path.exists(discordDirectory):
         filenames = os.listdir(discordDirectory)
         for filename in filenames:
             if filename.find('app-') >= 0:
-                discordDirectory += '\\' + filename + '\\Discord.exe'
+                discordDirectory += '/' + filename + '/Discord.exe'
                 break
 
     # If discord wasn't found, ask user for Discord.exe location
-    while not (os.path.exists(discordDirectory) and discordDirectory.endswith('\\Discord.exe')):
+    while not (os.path.exists(discordDirectory) and discordDirectory.endswith('/Discord.exe')):
         print('\nDiscord was not at the default location.')
         discordDirectory = input('Please paste the filepath to Discord.exe\n>')
 
@@ -63,7 +63,7 @@ if __name__ == '__main__':
         if os.path.exists(discordDirectory) and os.path.isdir(discordDirectory):
             for filename in os.listdir(discordDirectory):
                 if filename == 'Discord.exe':
-                    discordDirectory += '\\Discord.exe'
+                    discordDirectory += '/Discord.exe'
 
     # Get the image to make into the icon
     img = None
@@ -82,6 +82,6 @@ if __name__ == '__main__':
         img = roundImage(img)
 
     # Save image in the 2 ico spots
-    pathSplit = discordDirectory.split('\\')
-    img.save('\\'.join(pathSplit[0:-1]) + '\\app.ico')
-    img.save('\\'.join(pathSplit[0:-2]) + '\\app.ico')
+    pathSplit = discordDirectory.split('/')
+    img.save('/'.join(pathSplit[0:-1]) + '/app.ico')
+    img.save('/'.join(pathSplit[0:-2]) + '/app.ico')
