@@ -31,7 +31,37 @@ def getImagePath():
             imageDirectory.set('Invalid image file')
 
 
+def updateIcos():
+    # Load the image
+    img = None
+    try:
+        img = Image.open(imageDirectory.get())
+    except FileNotFoundError:
+        imageDirectory.set('The image doesn\'t exist')
+        return
+    except UnidentifiedImageError:
+        imageDirectory.set('This file type is not supported')
+        return
+
+    # Account for both slash types
+    if discordDirectory.get().index('/') > -1:
+        pathSplit = discordDirectory.get().split('/')
+    else:
+        pathSplit = discordDirectory.get().split('\\')
+
+    # Save the ico in both ico spots
+    img.save('/'.join(pathSplit[0:-1]) + '/app.ico')
+    img.save('/'.join(pathSplit[0:-2]) + '/app.ico')
+
+    quit()
+
+
 if __name__ == '__main__':
+    # Check for OS
+    if os.name != 'nt':
+        print('This currently only works for windows.')
+        quit()
+
     # Make Window Structure
     root = Tk()
     root.title("Discord Icon Changer")
@@ -54,10 +84,13 @@ if __name__ == '__main__':
     imageDirectory = StringVar()
     imageEntry = ttk.Entry(mainframe, width=70, textvariable=imageDirectory)
     imageEntry.grid(column=1, row=2, sticky='WE')
+    imageDirectory.set('Path to Image')
 
     # Image Directory Browse Button
     ttk.Button(mainframe, text='Browse', command=getImagePath).grid(column=2, row=2, sticky='WE')
 
+    # Run Button
+    ttk.Button(mainframe, text='Update Icon', command=updateIcos).grid(column=1, row=3, columnspan=2)
     # Add some padding
     for child in mainframe.winfo_children():
         child.grid_configure(padx=5, pady=5)
