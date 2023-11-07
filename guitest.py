@@ -75,7 +75,8 @@ if __name__ == '__main__':
     discordDirectory = StringVar()
     discordEntry = ttk.Entry(mainframe, width=70, textvariable=discordDirectory)
     discordEntry.grid(column=1, row=1, sticky='WE')
-    discordDirectory.set('C:/Users/77jam/AppData/Local/Discord/app-1.0.9021/Discord.exe')
+    user = os.environ.get('USERNAME')
+    discordDirectory.set('C:/Users/' + user + '/AppData/Local/Discord/app-1.0.9021/Discord.exe')
 
     # Discord Directory Browse Button
     ttk.Button(mainframe, text='Browse', command=getDiscordPath).grid(column=2, row=1, sticky='WE')
